@@ -1,14 +1,14 @@
 #include<stdio.h>
-#include<stdlib.h>
+#include<stdlib.h>//header file for malloc function
 typedef struct node//using typedef,queue as alias name 
 {
   int data;
-  struct node *next;
+  struct node *next;//self-referential structure
 }queue;
 
 void enqueue(int data,struct node **front,struct node **rear)//function definition for inserting elements in queue
 {
-  queue *newnode=malloc(sizeof(queue));
+  queue *newnode=malloc(sizeof(queue));//allocating memory to newnode on heap 
   if(newnode==NULL)
   {
     printf("memory not allocated\n");
@@ -28,7 +28,7 @@ void enqueue(int data,struct node **front,struct node **rear)//function definiti
       (*rear)->next=newnode;
       (*rear)=newnode;
     }
-    printf("enqueued element is:%d\n",(*rear)->data);
+    printf("\nenqueued element is:%d\n",(*rear)->data);
   }
 }
 
@@ -40,10 +40,10 @@ void dequeue(queue **front)//function definition for deleting elements in queue
   }
   else
   {
-    queue *temp=*front;
+    queue *temp=*front;//creating a temporary variable and assigning starting node address so we may not disturb first node and loose starting node address
     *front=temp->next;
     printf("\nDequeued element is:%d\t",temp->data);
-    free(temp);
+    free(temp);//freeing the memory allocated to temp pointer so node that is pointed by temp is deleted
   }
 }
     
@@ -55,8 +55,8 @@ void display(queue **front)//function definition for displaying elements in queu
   }
   else
   {
-    printf("elements in queue are:\n");
-    queue *temp=*front;
+    printf("\nelements in queue are:\n");
+    queue *temp=*front;//creating a temporary variable and assigning starting node address so we may not disturb first node and loose starting node address
     while(temp!=NULL)
     {
       printf("%d\t",temp->data);
@@ -68,14 +68,19 @@ void display(queue **front)//function definition for displaying elements in queu
 
 int main() 
 {
-  struct node *front=NULL;
-  struct node *rear=NULL;
-  enqueue(10,&front,&rear);
-  enqueue(20,&front,&rear);
-  enqueue(30,&front,&rear);
+  struct node *front=NULL;//front pointer stores address of starting node and used while dequeing and displaying
+  struct node *rear=NULL;//rear pointer is used to traverse the whole queue and used while enqueuing
+  display(&front);//initially nothing is there in queue so prints empty queue
+  enqueue(1,&front,&rear);//function call for inserting element in queue
+  display(&front);
+  enqueue(2,&front,&rear);
+  display(&front);
+  enqueue(3,&front,&rear);
+  display(&front);
+  dequeue(&front);//function call to delete element from queue
   display(&front);
   dequeue(&front);
-  dequeue(&front);
+  display(&front);
   dequeue(&front);
   display(&front);
 
